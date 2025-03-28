@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Document</title>
+<style type="text/css">
+.container {
+  margin: 0px auto;
+  width: 500px;
+  height: 375px;
+  border: 10px #333 solid;
+}
+#videoElement {
+  width: 500px;
+  height: 375px;
+  background-color: #666;
+}
+.centrer {
+  text-align: center;
+}
+.btn {
+  border: 1px solid blue;
+  background-color: rgba(0, 0, 255, 0.5);
+  padding: 12px 6px;
+  border-radius: 6px;
+  color: white;
+  text-decoration: none;
+  margin-top: 1rem;
+  display: inline-block;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <video autoplay="true" id="videoElement" poster="http://placekitten.com/g/500/375">
+  </video>
+</div>
+<div class="centrer">
+  <a href="#" class="btn" onClick="start();">Start</a>
+  <a href="#" class="btn" onClick="stop();">Stop</a>
+</div>
+<script>
+  var video = document.querySelector("#videoElement");
+
+function start(e) {
+  if (navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+      .then(function (stream) {
+        video.srcObject = stream;
+      })
+      .catch(function (err0r) {
+        console.log("Something went wrong!");
+      });
+  }
+}
+//start();
+
+function stop(e) {
+  var stream = video.srcObject;
+  var tracks = stream.getTracks();
+
+  for (var i = 0; i < tracks.length; i++) {
+    var track = tracks[i];
+    track.stop();
+  }
+
+  video.srcObject = null;
+}
+</script>
+</body>
+</html>
